@@ -5,6 +5,13 @@ const PORT = 8080;
 //used for generating unique shortURL
 const generateRandomString = () => Math.random().toString(36).substring(2,8);
 
+// const newObj = {
+//   Apple: "red"
+// };
+
+// newObj["Apple"] = "green"
+// newObj["Banana"] = "yellow"
+
 app.set("view engine", "ejs");
 
 //hardcoded urls to start with
@@ -22,7 +29,12 @@ app.get("/", (req, res) => {
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  res.send(generateRandomString());         // Respond with 'Ok' (we will replace this)
+  let shortURL = generateRandomString();
+  //saves to object urlDatabase
+  urlDatabase[shortURL] = req.body["longURL"];
+  res.redirect(`/urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
+  
+  
 });
 
 app.get("/urls/new", (req, res) => {
