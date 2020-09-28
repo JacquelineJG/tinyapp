@@ -9,6 +9,7 @@
   <title>TinyApp</title>
 </head>
 <body>
+  <!-- partials/_header include needed in top of body for all pages in the web app-->
   <%- include('partials/_header') %>
   <main style="margin: 1em;">
     <h3>My URLs</h3>
@@ -20,6 +21,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- to loop through the url info-->
         <% for(let url in urls) { %>
           <tr>
             <td><%= url %></td>

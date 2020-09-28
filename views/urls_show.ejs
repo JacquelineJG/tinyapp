@@ -7,11 +7,13 @@
 </head>
 
 <body>
+  <!-- partials/_header include needed in top of body for all pages in the web app-->
   <%- include('partials/_header') %>
   <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
         <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+        <!--the <a href=> is what creates a clickable link-->
         <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
       </div>
     <div class="card-footer text-muted"></div>
