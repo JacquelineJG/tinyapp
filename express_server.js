@@ -33,8 +33,12 @@ app.post("/urls", (req, res) => {
   //saves to object urlDatabase
   urlDatabase[shortURL] = req.body["longURL"];
   res.redirect(`/urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
-  
-  
+});
+
+// to redirect the short url to the long url page
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL]
+  res.redirect(longURL);
 });
 
 app.get("/urls/new", (req, res) => {
@@ -61,6 +65,10 @@ app.get("/urls/:shortURL", (req, res) => {
   // this variable displays the longURL by reaching into the urlDatabase and uses the req.params.shortURL to get the value 
   const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
   res.render("urls_show", templateVars);
+  //if statement for if shortURL returns a falsey value
+  if (!req.params.shortURL) {
+    res.send("400 Bad Request").statusCode(400);
+    }
 });
 
 app.listen(PORT, () => {
