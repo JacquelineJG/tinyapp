@@ -61,7 +61,7 @@ app.get("/urls", (req, res) => {
 ///urls represents the page and : declares a variable input in the page url bar and shortURL is the variable name of the parameter
 app.get("/urls/:shortURL", (req, res) => {
   // console log of req.params so I can remember what it does
-  console.log(req.params)
+  //console.log(req.params)
   // this variable displays the longURL by reaching into the urlDatabase and uses the req.params.shortURL to get the value 
   const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
   res.render("urls_show", templateVars);
@@ -76,6 +76,13 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls")
 
+})
+// edits the longURL using post request
+app.post("/urls/:id", (req, res) => {
+  urlDatabase[req.params.id] = req.body.longURL;
+  res.redirect("/urls")
+//  console.log("howdy params", req.params)
+//  console.log("hello body", req.body)
 })
 
 app.listen(PORT, () => {
