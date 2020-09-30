@@ -193,6 +193,11 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   userID = generateRandomString();
   const { email, password } = req.body
+  if(email === "" || password === "") {
+    console.log("Error")
+    return res.send("400 Bad Request").statusCode(400);
+
+  }
   if (emailVerify(users, email)) {
     res.send("400 Bad Request: Email already in use").statusCode(400);
   } else {
