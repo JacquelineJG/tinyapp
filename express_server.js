@@ -21,6 +21,24 @@ const emailVerify = (obj, email) => {
   }
   return null
 }
+const userIdByEmail = (obj, email) => {
+  for (const user in obj) {
+    const thisUser = obj[user]
+    if (thisUser.email === email) {
+      return thisUser;
+    }
+  }
+  return null
+}
+const passwordVerify = (obj, password) => {
+  for (const user in obj) {
+    const thisUser = obj[user]
+    if (thisUser.password === password) {
+      return true
+    }
+  }
+  return null
+}
 
 // const newObj = {
 //   Apple: "red"
@@ -100,6 +118,15 @@ app.get("/register", (req, res) => {
   res.render("register_page", templateVars);
 });
 
+app.get("/login", (req, res) => {
+  const templateVars = { 
+    email: req.cookies["email"], 
+    password: req.cookies["password"],
+    user: req.user
+  };
+  res.render("login_page", templateVars);
+});
+
 ///urls represents the page and : declares a variable input in the page url bar and shortURL is the variable name of the parameter
 app.get("/urls/:shortURL", (req, res) => {
   // console log of req.params so I can remember what it does
@@ -143,16 +170,21 @@ app.post("/urls/:id", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
-  //console.log(req.body);
-  res.cookie("user_id", userID)
-    // ... any other vars
-    
-  res.redirect("/urls")
+  const { email, password } = req.body
+  let foundUser = userIdByEmail(users, email)
+  if (!foundUser){
+    return res.send("403 Forbidden: Email/Password invalid").statusCode(403);
+  } 
+  if (foundUser.password === password) {
+    res.cookie("user_id", foundUser.id);
+    return res.redirect('/urls');
+  }
+  return res.send("403 Forbidden: Email/Password invalid").statusCode(403);
 });
 
 app.post("/logout", (req, res) => {
   //console.log(req.body);
-  res.clearCookie("user_id", userID)
+  res.clearCookie("user_id");
     // ... any other vars
     
   res.redirect("/urls")
@@ -171,9 +203,9 @@ app.post("/register", (req, res) => {
     }
   users[userID] = newUser;
   res.cookie("user_id", userID)
-  console.log(users)
+
   res.redirect("/urls")
-}
+  }
 })
 
 app.listen(PORT, () => {
