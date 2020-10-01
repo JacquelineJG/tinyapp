@@ -12,6 +12,7 @@
   <!-- partials/_header include needed in top of body for all pages in the web app-->
   <%- include('partials/_header') %>
   <main style="margin: 1em;">
+    <% if (user) { %>
     <h3>My URLs</h3>
     <table class="table">
       <thead>
@@ -23,18 +24,23 @@
         </tr>
       </thead>
       <tbody>
+       
         <!-- to loop through the url info-->
         <% for(let url in urls) { %>
           <tr>
             <td><%= url %></td>
-            <td><%= urls[url] %></td>
+            <td><%= urls[url].longURL %></td>
             <!--this creates a delete button form on the client side--> 
             <td><a href= "/urls/<%=url%>/" class="btn btn-outline-primary">Edit</a></td>
             <td><form method="POST" action="/urls/<%=url%>/delete"><button class="btn btn-outline-danger">Delete</button></form></td>
           </tr>
         <% } %>
+       
       </tbody>
     </table>
+    <% } else { %>
+      <h3>Register or log in to create some short urls!</h3>
+    <% } %>
   </main>
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
