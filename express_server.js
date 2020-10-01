@@ -143,13 +143,13 @@ app.get("/urls", (req, res) => {
     console.log('req.user.id', req.user.id)
     const templateVars = { 
       urls: userUrls,
-      user: req.user.id
+      user: req.user
     };
     return res.render("urls_index", templateVars);
   } else {
     // res.status(403).send("Please log in or register")
     const errorVars = {
-      errorMessage: "ERROR: NOT AUTHORIZED",
+      errorMessage: "REGISTER OR SIGN IN TO CREATE TINY URLS!!!",
       user: req.user
     }
     res.render("error", errorVars)
@@ -241,17 +241,17 @@ app.post("/login", (req, res) => {
   // const { email, password } = req.body
   let foundUser = userIdByEmail(bcrypt, users, req.body.email, req.body.password)
   //console.log("founduser", foundUser)
-  if (!foundUser){
-    return res.send("403 Forbidden: Email/Password invalid")
-  } 
   if (foundUser) {
     //console.log(foundUser.user_id)
-    req.session.userID = foundUser.userID
+    req.session.userID = foundUser.id
     
     // console.log("req session userID", req.session.user_id)
     //console.log("user found")
     res.redirect('/urls');
-  }
+  } else {
+      return res.send("403 Forbidden: Email/Password invalid")
+    } 
+  
   //return res.send("403 Forbidden: Email/Password invalid")
 });
 
