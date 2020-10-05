@@ -2,7 +2,6 @@ const express = require("express");
 const cookieSession = require('cookie-session')
 const app = express();
 const bodyParser = require("body-parser");
-
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
 

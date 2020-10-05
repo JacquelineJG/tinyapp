@@ -103,12 +103,21 @@ app.get("/login", (req, res) => {
 // /urls represents the page and : declares a variable input in the page url bar and shortURL is the variable name of the parameter
 app.get("/urls/:shortURL", (req, res) => {
   // this variable displays the longURL by reaching into the urlDatabase and uses the req.params.shortURL to get the value 
+  if (req.user) {
+  const userUrls = urlsForUser(req.user.id, urlDatabase);
   const templateVars = {
     shortURL: req.params.shortURL, 
     longURL: urlDatabase[req.params.shortURL].longURL,
     user: req.user
    };
   res.render("urls_show", templateVars);
+  } else {
+    const errorVars = {
+      errorMessage: "Unauthorized access",
+      user: req.user
+    }
+    res.render("error", errorVars)
+  }
   //if statement for if shortURL returns a falsey value
   if (!req.params.shortURL) {
     res.send("400 Bad Request")
