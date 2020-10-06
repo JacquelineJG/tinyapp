@@ -103,6 +103,7 @@ app.get("/login", (req, res) => {
 // /urls represents the page and : declares a variable input in the page url bar and shortURL is the variable name of the parameter
 app.get("/urls/:shortURL", (req, res) => {
   // this variable displays the longURL by reaching into the urlDatabase and uses the req.params.shortURL to get the value 
+  //check shortURL exists in database
   if (req.user) {
   const userUrls = urlsForUser(req.user.id, urlDatabase);
   const templateVars = {
@@ -150,9 +151,11 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   const user_id = req.session.userID
   const user = users[user_id];
-  if (user.id){
+  if (user.id === user){
   urlDatabase[req.params.id].longURL = req.body.longURL;
   res.redirect("/urls")
+  } else {
+    res.send('403 Forbidden')
   }
 });
 
