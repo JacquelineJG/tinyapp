@@ -20,7 +20,6 @@ const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
   i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
-// console.log(urlDatabase)
 // USER DATABASE OBJECT
 const users = {
   "userRandomID": {
@@ -151,7 +150,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   const user_id = req.session.userID
   const user = users[user_id];
-  if (user.id === user){
+  if (user.id){
   urlDatabase[req.params.id].longURL = req.body.longURL;
   res.redirect("/urls")
   } else {
@@ -179,7 +178,6 @@ app.post("/register", (req, res) => {
   let userID = generateRandomString();
   const { email, password } = req.body
   if(email === "" || password === "") {
-    console.log("Error")
     return res.send("400 Bad Request")
   }
   if (emailVerify(users, email)) {
